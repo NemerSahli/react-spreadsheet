@@ -1,46 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Spreadsheet from 'react-spreadsheet';
 
-class App extends Component {
+const RangeView = ({ cell, getValue }) => (
+  <input
+    type="range"
+    value={getValue({ data: cell })}
+    disabled
+    style={{ pointerEvents: 'none' }}
+  />
+);
+
+const RangeEdit = ({ getValue, cell, onChange }) => (
+  <input
+    type="range"
+    onChange={e => {
+      onChange({ ...cell, value: e.target.value });
+    }}
+    value={getValue({ data: cell }) || 0}
+    autoFocus
+  />
+);
+
+
+export default class App extends Component {
+  state={
+    data:[
+      [{ value: 'Flavors' },{ value: 'Flavors' }],
+      [{ value: 'Vanilla' }, { value: 'Chocolate' }],
+      [{ value: 'Strawberry' }, { value: 'Cookies' }],
+      [
+        { value: 'How much do you like ice cream?' },
+        { value: 100, DataViewer: RangeView, DataEditor: RangeEdit }
+      ]
+    ]
+  }
   render() {
-    const name = 'Larry';
-    const a = 5;
-    const b = 7;
-    const showHalloworld = true;
-
-    const num1 = 42;
-    const num2 = 50;
-    let math = (
-      <h4>
-        {num1} + {num2} = {num1 + num2}
-      </h4>
-    );
-
-    let greet = 'Hallo World from task';
-    let greet2 = <h1>{greet}</h1>;
-
     return (
-      <div className="App">
-        {/* comment */}
-        <h1>The App Component</h1>
-        <h4>Hallo {name}</h4>
-        <h4>Hallo {name.toUpperCase()}</h4>
-        <h4>1 + 1 = {1 + 1}</h4>
-        <h4>a + b = {a + b}</h4>
-        <h4>
-          Nothing:
-          {null}
-        </h4>
-        {showHalloworld ? <h4>Hallo World</h4> : null}
-        {math}
-        {/* task: create a variable that contains "hallo world". then display
-    the hallo world inside a h1 tag that you save in a variable*/}
-        <h1>{greet}</h1>
-        {greet2}
+      <div>
+        <Spreadsheet data={this.state.data} />
       </div>
     );
   }
 }
-
-export default App;
